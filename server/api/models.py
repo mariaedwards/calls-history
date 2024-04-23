@@ -1,5 +1,6 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from django.db.models import Index
 
 
 class PhoneNumber(models.Model):
@@ -25,6 +26,12 @@ class CallHistory(models.Model):
         ('Completed', 'Completed'), ('Missed', 'Missed')))
     duration = models.PositiveSmallIntegerField(
         null=True, blank=True)  # Null for missed calls
+
+    class Meta:
+        indexes = [
+            Index(fields=['phone_number', 'created_at']),
+        ]
+
 
     def __str__(self):
         return f"{self.call_type} {self.status} call on {self.created_at.strftime('%Y-%m-%d %H:%M:%S')} to/from {self.counterparty}"

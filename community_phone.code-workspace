@@ -15,6 +15,12 @@
             "--load-plugins",
             "pylint_django",
             "--django-settings-module=myproject.settings"
+        ],
+        "cSpell.words": [
+            "callshistory",
+            "counterparty",
+            "modelfields",
+            "phonenumber"
         ]
     }
 }
