@@ -1,11 +1,11 @@
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Phones | CallsHistory",
-  description: "See all your phones and calls history summary",
+  title: "Phone History | CallsHistory",
+  description: "See the details of your phone call history",
 };
 
 export default function RootLayout({ children }) {
