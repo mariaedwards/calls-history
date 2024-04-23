@@ -1,17 +1,18 @@
-from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import PhoneNumber, CallHistory
+from .serializers import CallHistorySerializer,PhoneNumberSerializer
 
+class CallHistoryList(APIView):
+    def get(self, request, phone_number):
+        phone = get_object_or_404(PhoneNumber, number=phone_number)
+        call_histories = CallHistory.objects.filter(phone_number=phone)
+        serializer = CallHistorySerializer(call_histories, many=True)
+        return Response(serializer.data)
 
-def get_call_history(request, phone_number):
-    # Dummy data simulation based on phone number
-    call_history_data = {
-        "+12345678901": [
-            {"created_at": "2024-01-31T10:00:00Z", "counterparty": "+13333333333",
-                "type": "Completed Inbound", "duration": "37.4"},
-            {"created_at": "2024-01-31T11:00:00Z",
-                "counterparty": "+14444444444", "type": "Missed Outbound"}
-        ]
-    }
-
-    # Default response if phone number not found
-    data = call_history_data.get(phone_number, [])
-    return JsonResponse(data, safe=False)
+class PhoneNumberList(APIView):
+    def get(self, request):
+        phone_numbers = PhoneNumber.objects.all()
+        serializer = PhoneNumberSerializer(phone_numbers, many=True)
+        return Response(serializer.data)

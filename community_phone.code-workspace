@@ -1,0 +1,20 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "python.autoComplete.extraPaths": ["${workspaceFolder}/server"],
+        "python.defaultInterpreterPath": "${workspaceFolder}/server/env/bin/python",
+        "python.analysis.extraPaths": [
+            "${workspaceFolder}/server"
+        ],
+        "pylint.path": ["${workspaceFolder}/server/env/bin/pylint"],
+        "pylint.args": [
+            "--load-plugins",
+            "pylint_django",
+            "--django-settings-module=myproject.settings"
+        ]
+    }
+}

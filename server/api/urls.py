@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import get_call_history
+from .views import CallHistoryList, PhoneNumberList
 
 urlpatterns = [
-    path('calls/<str:phone_number>', get_call_history, name='call-history'),
+    path('calls/<str:phone_number>/', CallHistoryList.as_view(), name='call-history-list'),
+    path('phone-numbers/', PhoneNumberList.as_view(), name='phone-number-list'),
 ]
