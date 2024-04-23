@@ -49,6 +49,8 @@ There’s no need for user authentication in this project.
 
 ### API Server
 
+As a side note, I am not familiar with the details of the Django ecosystem and haven't worked with Django professionally, so my library choices and implementation were the results of reading documentation, StackOverflow, and blog posts using chatGPT.
+
 1. Set up project structure and install Django and Django REST framework.
 
 Django is a requirement for this project. I chose to integrate the Django REST framework due to its robustness and flexibility as a toolkit for building Web APIs. It enhances Django's capabilities, facilitating the creation of APIs that can interact with other services or serve as the backend for front-end applications, especially in Single Page Application (SPA) architectures that use frameworks like React or Angular.
@@ -67,3 +69,6 @@ To ensure optimal database normalization and maintainability, I designed a dedic
 
 Data Population
 The dummy data required for initial testing and simulation purposes is generated through a script located in the `api/` folder.
+
+4. Views
+  I decided to implement extra functionality because it made sense from a product perspective. First, the data can be massive, so we need to implement pagination to provide a better user experience. Second, an admin might want to examine the performance of a particular phone at a glance. So I used serializers to include extra data for the PhoneNumbers and implemented sorting and filtering using the library [django-filter](https://django-filter.readthedocs.io/en/stable/)
