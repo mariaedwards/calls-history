@@ -58,3 +58,12 @@ Django is a requirement for this project. I chose to integrate the Django REST f
 **Prerequisites**: Docker must be installed.
 
 Although Docker and PostgreSQL were not explicitly required, I opted to utilize Docker to ensure a consistent, isolated environment that simplifies setup and facilitates scaling, thereby guaranteeing that the application runs seamlessly on any system. Additionally, I chose PostgreSQL for the database to bring the solution closer to production readiness, demonstrating a commitment to robust and scalable architecture.
+
+3. Models
+ To effectively manage phone numbers within the system, I've integrated the [django-phonenumber-field](https://django-phonenumber-field.readthedocs.io/en/latest/#django-phonenumber-field). This choice was driven by the library's robust handling of international phone number formats and its seamless integration with Django, ensuring that our application adheres to global standards and improves data validity.
+
+Architecture Decision
+To ensure optimal database normalization and maintainability, I designed a dedicated PhoneNumber model separate from the CallHistory model. This architectural decision helps in segregating responsibilities within the system, leading to cleaner code and easier scalability. The PhoneNumber model exclusively manages phone number details, while the CallHistory model tracks the call-related data, thereby simplifying data management and enhancing the database's performance.
+
+Data Population
+The dummy data required for initial testing and simulation purposes is generated through a script located in the `api/` folder.
