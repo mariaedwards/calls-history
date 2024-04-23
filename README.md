@@ -72,3 +72,8 @@ The dummy data required for initial testing and simulation purposes is generated
 
 4. Views
   I decided to implement extra functionality because it made sense from a product perspective. First, the data can be massive, so we need to implement pagination to provide a better user experience. Second, an admin might want to examine the performance of a particular phone at a glance. So I used serializers to include extra data for the PhoneNumbers and implemented sorting and filtering using the library [django-filter](https://django-filter.readthedocs.io/en/stable/)
+
+
+### Client
+
+Per requirement, I am going to use Next.js and the swr library. For saving time in developing custom components, I chose to use TailwindCSS.
