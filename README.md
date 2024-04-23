@@ -46,6 +46,15 @@ number by going to /calls/<phone_number>
 There’s no need for user authentication in this project.
 
 ## Implementation
+
+### API Server
+
 1. Set up project structure and install Django and Django REST framework.
 
-   Django is a requirement, where Django REST framework was chosen because it is a powerful and flexible toolkit for building Web APIs on top of Django. It extends Django's abilities, allowing you to create APIs that can communicate with other services or power your front-end applications, particularly in a SPA (Single Page Application) architecture using frameworks like React or Angular.
+Django is a requirement for this project. I chose to integrate the Django REST framework due to its robustness and flexibility as a toolkit for building Web APIs. It enhances Django's capabilities, facilitating the creation of APIs that can interact with other services or serve as the backend for front-end applications, especially in Single Page Application (SPA) architectures that use frameworks like React or Angular.
+
+2. Add Docker and PostgreSQL
+
+**Prerequisites**: Docker must be installed.
+
+Although Docker and PostgreSQL were not explicitly required, I opted to utilize Docker to ensure a consistent, isolated environment that simplifies setup and facilitates scaling, thereby guaranteeing that the application runs seamlessly on any system. Additionally, I chose PostgreSQL for the database to bring the solution closer to production readiness, demonstrating a commitment to robust and scalable architecture.
