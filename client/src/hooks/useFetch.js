@@ -12,7 +12,7 @@ export const usePaginatedFetch = (url) => {
             return `${url}?page=${pageIndex + 1}`;
         },
         fetcher,
-        { persistSize: true }
+        { persistSize: true ,   revalidateFirstPage : false }
     );
 
     const isLoadingInitialData = !data && !error;
