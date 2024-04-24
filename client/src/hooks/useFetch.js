@@ -1,7 +1,7 @@
 import useSWRInfinite from 'swr/infinite';
 import axios from 'axios';
 
-const fetcher = url => axios.get(url).then(res => res.data);
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export const usePaginatedFetch = (url) => {
     const { data, size, setSize, error } = useSWRInfinite(
@@ -12,7 +12,7 @@ export const usePaginatedFetch = (url) => {
             return `${url}?page=${pageIndex + 1}`;
         },
         fetcher,
-        { persistSize: true ,   revalidateFirstPage : false }
+        { persistSize: true, revalidateFirstPage: false }
     );
 
     const isLoadingInitialData = !data && !error;
@@ -23,5 +23,12 @@ export const usePaginatedFetch = (url) => {
     const isReachingEnd =
         isEmpty || (data && data[data.length - 1]?.next === null);
 
-    return { data:  data ? data.flatMap(page => page.results) : [], error, isLoadingMore, size, setSize, isReachingEnd };
+    return {
+        data: data ? data.flatMap((page) => page.results) : [],
+        error,
+        isLoadingMore,
+        size,
+        setSize,
+        isReachingEnd,
+    };
 };
