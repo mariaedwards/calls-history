@@ -109,6 +109,11 @@ I decided to utilize infinite scrolling even though for a data-driven applicatio
    docker-compose run --rm web python manage.py test
    ```
 
+### Demo
+![Demo GIF](assets/demo.gif)
+
+See screenshots in /assets folder
+
 ### Known issues
 
 - I encountered one instance when starting localhost:3000 (next.js) resulted in no data display - refreshing the browser helped
@@ -116,8 +121,11 @@ I decided to utilize infinite scrolling even though for a data-driven applicatio
 
 ### Next steps
 
-1. Sorting and filtering functionality on client
+1. Client tests
+2. Sorting and filtering functionality on client
 2. Implementing nice loading state
 3. Breaking lists into smaller components
 4. Utilizing env variables and production-ready libraries for deployment
 5. Improvements
+
+
