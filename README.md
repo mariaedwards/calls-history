@@ -47,9 +47,9 @@ There’s no need for user authentication in this project.
 
 ## Implementation
 
-### API Server
+As a side note, I am not familiar with the details of the Django ecosystem and haven't worked with Django professionally, so my library choices and implementation were the results of research. Similarly, I haven't worked with swr and Next.js professionally.
 
-As a side note, I am not familiar with the details of the Django ecosystem and haven't worked with Django professionally, so my library choices and implementation were the results of reading documentation, StackOverflow, and blog posts using chatGPT.
+### API Server
 
 1. Set up project structure and install Django and Django REST framework.
 
@@ -77,3 +77,27 @@ The dummy data required for initial testing and simulation purposes is generated
 ### Client
 
 Per requirement, I am going to use Next.js and the swr library. For saving time in developing custom components, I chose to use TailwindCSS.
+I decided to utilize infinite scrolling even though for a data-driven application it is not ideal (in oppose to table with pages)
+
+### Running the application
+
+1. clone the repo
+2. make sure you have Docker installed
+3. `cd server` folder and run
+   ```
+   docker-compose build
+   docker-compose up
+   ```
+
+4. In a separate terminal, `cd client`
+5. Run `npm install` and `npm run dev`
+6. Open localhost:3000 to see the UI.
+
+### Next steps
+
+1. Testing
+2. Sorting functionality on client
+3. Implementing nice loading state
+4. Breaking lists into smaller components
+5. Utilizing env variables and production-ready libraries for deployment
+6. Improvements
