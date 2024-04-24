@@ -93,11 +93,27 @@ I decided to utilize infinite scrolling even though for a data-driven applicatio
 5. Run `npm install` and `npm run dev`
 6. Open localhost:3000 to see the UI.
 
+
+### Updating schema
+   ```
+   docker-compose build
+   docker-compose up -d
+   docker-compose run --rm web python manage.py makemigrations
+   docker-compose run --rm web python manage.py migrate
+   ```
+
+### Running tests in python
+   ```
+   docker-compose build
+   docker-compose up -d
+   docker-compose run --rm web python manage.py test
+   ```
+
+
 ### Next steps
 
-1. Testing
-2. Sorting functionality on client
-3. Implementing nice loading state
-4. Breaking lists into smaller components
-5. Utilizing env variables and production-ready libraries for deployment
-6. Improvements
+1. Sorting and filtering functionality on client
+2. Implementing nice loading state
+3. Breaking lists into smaller components
+4. Utilizing env variables and production-ready libraries for deployment
+5. Improvements

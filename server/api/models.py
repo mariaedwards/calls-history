@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 from django.db.models import Index
 
@@ -7,7 +8,7 @@ class PhoneNumber(models.Model):
     number = PhoneNumberField(null=False, blank=False,
                               unique=True, primary_key=True)
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(default=timezone.now)
     discontinued_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
@@ -18,7 +19,7 @@ class PhoneNumber(models.Model):
 class CallHistory(models.Model):
     phone_number = models.ForeignKey(
         'PhoneNumber', on_delete=models.CASCADE, related_name='call_histories')
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(default=timezone.now)
     counterparty = PhoneNumberField(null=False, blank=False)
     call_type = models.CharField(max_length=8, choices=(
         ('Inbound', 'Inbound'), ('Outbound', 'Outbound')))
