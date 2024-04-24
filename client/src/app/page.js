@@ -1,6 +1,6 @@
-
+import PhonesList from "@/components/PhonesList";
 export default function Home() {
   return (
-    <p>Main</p>
+    <PhonesList/>
   );
 }

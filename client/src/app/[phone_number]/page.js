@@ -1,5 +1,6 @@
-export default function PhoneDetails() {
+import CallsList from "@/components/CallsList";
+export default function PhoneDetails({ params }) {
   return (
-   <p>phone</p>
+   <CallsList phone_number={decodeURIComponent(params.phone_number)}/>
   );
 }

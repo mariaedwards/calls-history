@@ -59,9 +59,10 @@ class CallHistoryList(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = ['counterparty', 'call_type', 'status', 'created_at', 'duration']
     ordering = ['created_at']  # Default ordering
+    pagination_class = StandardResultsSetPagination  # Add pagination
 
     def get_queryset(self):
-        phone_number = self.kwargs.get('phone_number')
+        phone_number = self.kwargs['phone_number']
         phone = get_object_or_404(PhoneNumber, number=phone_number)
         start_date = self.request.query_params.get('start_date', phone.created_at.strftime('%Y-%m-%d'))
         end_date = self.request.query_params.get('end_date', timezone.now().strftime('%Y-%m-%d'))
@@ -77,3 +78,4 @@ class CallHistoryList(generics.ListAPIView):
             return super(CallHistoryList, self).list(request, *args, **kwargs)
         except ValueError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
