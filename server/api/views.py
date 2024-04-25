@@ -14,24 +14,45 @@ from .serializers import CallHistorySerializer, PhoneNumberSerializer
 
 
 def parse_date(date_str, default=None):
+    """
+    Parses a string into a datetime object.
+
+    Args:
+        date_str (str): A date string in the format '%m-%d-%Y'.
+        default (datetime.datetime, optional): A default date to return if parsing fails. Defaults to None.
+
+    Returns:
+        datetime.datetime: The parsed date or the default date if parsing fails due to a ValueError.
+    """
     try:
         return datetime.datetime.strptime(date_str, '%m-%d-%Y')
     except ValueError:
         return default
 
 class StandardResultsSetPagination(PageNumberPagination):
+    """
+    Custom pagination class to set standard pagination parameters for API views.
+    """
     page_size = 100
     page_size_query_param = 'page_size'
     max_page_size = 1000
 
 class PhoneNumberList(generics.ListAPIView):
+    """
+    API view to list and filter phone numbers based on date range with associated call statistics.
+    """
     serializer_class = PhoneNumberSerializer
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
+        """
+        Overrides the default queryset to filter phone numbers by a start and end date range,
+        and annotates with call statistics such as missed calls, completed calls, and average call duration.
+        """
         start_date = self.request.query_params.get('start_date')
         end_date = self.request.query_params.get('end_date', timezone.now().strftime('%m-%d-%Y'))
 
+        # Set default start date to the earliest 'created_at' date of PhoneNumber or to today's date if none exist.
         if not start_date:
             earliest_phone = PhoneNumber.objects.aggregate(Min('created_at'))['created_at__min']
             start_date = earliest_phone.strftime('%m-%d-%Y') if earliest_phone else timezone.now().strftime('%m-%d-%Y')
@@ -55,6 +76,9 @@ class PhoneNumberList(generics.ListAPIView):
         )
 
 class CallHistoryList(generics.ListAPIView):
+    """
+    API view to list call history for a specific phone number filtered by a date range.
+    """
     serializer_class = CallHistorySerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = ['counterparty', 'call_type', 'status', 'created_at', 'duration']
@@ -62,6 +86,9 @@ class CallHistoryList(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination  # Add pagination
 
     def get_queryset(self):
+        """
+        Retrieves the call history for a specific phone number, filtered by start and end dates.
+        """
         phone_number = self.kwargs['phone_number']
         phone = get_object_or_404(PhoneNumber, number=phone_number)
         start_date = self.request.query_params.get('start_date', phone.created_at.strftime('%m-%d-%Y'))
@@ -74,6 +101,9 @@ class CallHistoryList(generics.ListAPIView):
             phone_number=phone, created_at__range=(start_date, end_date))
 
     def list(self, request, *args, **kwargs):
+        """
+        Custom list method to handle potential ValueError from queryset operations and return appropriate error response.
+        """
         try:
             return super(CallHistoryList, self).list(request, *args, **kwargs)
         except ValueError as e:
