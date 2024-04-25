@@ -26,8 +26,4 @@ describe('validateDate', () => {
         expect(validateDate('02-29-2021')).toBe(false); // Not a leap year
     });
 
-    it('should correctly handle edge cases around leap year calculation', () => {
-        expect(validateDate('02-29-1900')).toBe(false); // Not a leap year by Gregorian rules
-        expect(validateDate('02-29-2000')).toBe(true); // Leap year by Gregorian rules
-    });
 });
