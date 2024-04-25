@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import Table from '@/components/Table';
-import { usePaginatedFetch } from '@/hooks/useFetch'; // Make sure this imports correctly
+import { usePaginatedFetch } from '@/hooks/useFetch';
 import { formatDate, formatPhone, formatDuration } from '@/utils/formatters';
 import DateFilterBar from '@/components/DateFilterBar';
 
