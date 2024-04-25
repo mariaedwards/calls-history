@@ -52,6 +52,7 @@ const DateFilterBar = ({ onFilter }) => {
                             type="text"
                             mask="99-99-9999"
                             id="start-date"
+                            data-testid="start-date"
                             value={startDate}
                             onChange={handleStartDateChange}
                             placeholder="MM-DD-YYYY"
@@ -74,6 +75,7 @@ const DateFilterBar = ({ onFilter }) => {
                         <InputMask
                             type="text"
                             id="end-date"
+                            data-testid="end-date"
                             mask="99-99-9999"
                             value={endDate}
                             onChange={handleEndDateChange}
