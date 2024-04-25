@@ -1,11 +1,15 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef,useState } from 'react';
 import classNames from 'classnames';
 import Table from '@/components/Table';
 import { usePaginatedFetch } from '@/hooks/useFetch'; // Make sure this imports correctly
 import { formatDate, formatPhone, formatDuration } from '@/utils/formatters';
+import DateFilterBar from '@/components/DateFilterBar';
 
 const CallsList = ({ phone_number }) => {
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+
     const {
         data: calls,
         error,
@@ -13,7 +17,7 @@ const CallsList = ({ phone_number }) => {
         isReachingEnd,
         isLoadingMore,
     } = usePaginatedFetch(
-        `http://localhost:8000/api/calls/${encodeURIComponent(phone_number)}`
+        `http://localhost:8000/api/calls/${encodeURIComponent(phone_number)}`, startDate, endDate
     );
     const loaderRef = useRef(null);
 
@@ -35,6 +39,11 @@ const CallsList = ({ phone_number }) => {
             }
         };
     }, [setSize, isReachingEnd, isLoadingMore]);
+
+    const handleFilter = (start, end) => {
+        setStartDate(start);
+        setEndDate(end);
+    };
 
     if (error)
         return (
@@ -130,6 +139,7 @@ const CallsList = ({ phone_number }) => {
                             </div>
                         </div>
                         <div className="mt-8 flow-root">
+                            <DateFilterBar onFilter={handleFilter}/>
                             <Table
                                 columns={columns}
                                 data={calls}

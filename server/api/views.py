@@ -15,7 +15,7 @@ from .serializers import CallHistorySerializer, PhoneNumberSerializer
 
 def parse_date(date_str, default=None):
     try:
-        return datetime.datetime.strptime(date_str, '%Y-%m-%d')
+        return datetime.datetime.strptime(date_str, '%m-%d-%Y')
     except ValueError:
         return default
 
@@ -30,11 +30,11 @@ class PhoneNumberList(generics.ListAPIView):
 
     def get_queryset(self):
         start_date = self.request.query_params.get('start_date')
-        end_date = self.request.query_params.get('end_date', timezone.now().strftime('%Y-%m-%d'))
+        end_date = self.request.query_params.get('end_date', timezone.now().strftime('%m-%d-%Y'))
 
         if not start_date:
             earliest_phone = PhoneNumber.objects.aggregate(Min('created_at'))['created_at__min']
-            start_date = earliest_phone.strftime('%Y-%m-%d') if earliest_phone else timezone.now().strftime('%Y-%m-%d')
+            start_date = earliest_phone.strftime('%m-%d-%Y') if earliest_phone else timezone.now().strftime('%m-%d-%Y')
 
         start_date = parse_date(start_date, timezone.now())
         end_date = parse_date(end_date, timezone.now())
@@ -64,8 +64,8 @@ class CallHistoryList(generics.ListAPIView):
     def get_queryset(self):
         phone_number = self.kwargs['phone_number']
         phone = get_object_or_404(PhoneNumber, number=phone_number)
-        start_date = self.request.query_params.get('start_date', phone.created_at.strftime('%Y-%m-%d'))
-        end_date = self.request.query_params.get('end_date', timezone.now().strftime('%Y-%m-%d'))
+        start_date = self.request.query_params.get('start_date', phone.created_at.strftime('%m-%d-%Y'))
+        end_date = self.request.query_params.get('end_date', timezone.now().strftime('%m-%d-%Y'))
 
         start_date = parse_date(start_date, phone.created_at)
         end_date = parse_date(end_date, timezone.now())

@@ -1,20 +1,26 @@
 'use client';
 import Table from '@/components/Table';
-import { useEffect, useRef } from 'react';
+import DateFilterBar from '@/components/DateFilterBar';
+import { useEffect, useRef, useState } from 'react';
 import { usePaginatedFetch } from '@/hooks/useFetch';
 import { formatPhone, formatDate, formatDuration } from '@/utils/formatters';
 import classNames from 'classnames';
 import Link from 'next/link';
 
+
 const PhonesList = () => {
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+
     const {
         data: phones,
         error,
         isLoadingMore,
         setSize,
         isReachingEnd,
-    } = usePaginatedFetch('http://localhost:8000/api/phone-numbers');
+    } = usePaginatedFetch('http://localhost:8000/api/phone-numbers', startDate, endDate);
     const loaderRef = useRef();
+
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -34,6 +40,11 @@ const PhonesList = () => {
             }
         };
     }, [setSize, isReachingEnd]);
+
+    const handleFilter = (start, end) => {
+        setStartDate(start);
+        setEndDate(end);
+    };
 
     if (error)
         return (
@@ -141,6 +152,7 @@ const PhonesList = () => {
                                 </p>
                             </div>
                         </div>
+                        <DateFilterBar onFilter={handleFilter}/>
                         <Table
                             columns={columns}
                             data={phones || []}

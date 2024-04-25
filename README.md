@@ -114,6 +114,10 @@ I decided to utilize infinite scrolling even though for a data-driven applicatio
 
 See screenshots in /assets folder
 
+### Known Issues
+
+- Filtering dates has some discrepancy - it includes previous date
+
 ### Next steps
 
 1. Client tests
