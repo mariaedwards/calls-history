@@ -114,10 +114,9 @@ I decided to utilize infinite scrolling even though for a data-driven applicatio
 
 See screenshots in /assets folder
 
-### Known issues
+### Known Issues
 
-- I encountered one instance when starting localhost:3000 (next.js) resulted in no data display - refreshing the browser helped
-- Flashing no data before the data is load is a bad UX, I would like to fix it, but since I ran out of time, this bug will be in the submission.
+- Filtering dates has some discrepancy - it includes previous date
 
 ### Next steps
 

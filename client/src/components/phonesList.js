@@ -1,20 +1,26 @@
 'use client';
 import Table from '@/components/Table';
-import { useEffect, useRef } from 'react';
+import DateFilterBar from '@/components/DateFilterBar';
+import { useEffect, useRef, useState } from 'react';
 import { usePaginatedFetch } from '@/hooks/useFetch';
 import { formatPhone, formatDate, formatDuration } from '@/utils/formatters';
 import classNames from 'classnames';
 import Link from 'next/link';
 
+
 const PhonesList = () => {
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+
     const {
         data: phones,
         error,
         isLoadingMore,
         setSize,
         isReachingEnd,
-    } = usePaginatedFetch('http://localhost:8000/api/phone-numbers');
+    } = usePaginatedFetch('http://localhost:8000/api/phone-numbers', startDate, endDate);
     const loaderRef = useRef();
+
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -35,12 +41,16 @@ const PhonesList = () => {
         };
     }, [setSize, isReachingEnd]);
 
+    const handleFilter = (start, end) => {
+        setStartDate(start);
+        setEndDate(end);
+    };
+
     if (error)
         return (
             <div className="text-red-500">Failed to load phone numbers.</div>
         );
-    if (!phones && phones.length != 0) return <div>Loading...</div>;
-    if (phones.length == 0)
+    if (phones.length == 0 && !isLoadingMore)
         return <div className="text-red-500">No phones available.</div>;
 
     const columns = [
@@ -142,14 +152,15 @@ const PhonesList = () => {
                                 </p>
                             </div>
                         </div>
+                        <DateFilterBar onFilter={handleFilter}/>
                         <Table
                             columns={columns}
                             data={phones || []}
                             renderRow={renderRow}
                             keyExtractor={(item) => item.number}
                         />
-                        <div ref={loaderRef}>
-                            {isLoadingMore ? <p>Loading more...</p> : ''}
+                        <div ref={loaderRef} className="text-center">
+                            {isLoadingMore && !isReachingEnd ? <p>Loading...</p> : ''}
                         </div>
                     </div>
                 </div>

@@ -1,26 +1,38 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import Table from '@/components/Table';
-import { usePaginatedFetch } from '@/hooks/useFetch'; // Make sure this imports correctly
+import { usePaginatedFetch } from '@/hooks/useFetch';
 import { formatDate, formatPhone, formatDuration } from '@/utils/formatters';
+import DateFilterBar from '@/components/DateFilterBar';
 
 const CallsList = ({ phone_number }) => {
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [sort, setSort] = useState({ field: 'created_at', direction: 'asc' });
+
     const {
         data: calls,
         error,
         setSize,
         isReachingEnd,
-        isLoading,
+        isLoadingMore,
     } = usePaginatedFetch(
-        `http://localhost:8000/api/calls/${encodeURIComponent(phone_number)}`
+        `http://localhost:8000/api/calls/${encodeURIComponent(phone_number)}`,
+        startDate,
+        endDate,
+        `${sort.direction === 'asc' ? '' : '-'}${sort.field}`
     );
     const loaderRef = useRef(null);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting && !isReachingEnd && !isLoading) {
+                if (
+                    entries[0].isIntersecting &&
+                    !isReachingEnd &&
+                    !isLoadingMore
+                ) {
                     setSize((size) => size + 1);
                 }
             },
@@ -34,29 +46,82 @@ const CallsList = ({ phone_number }) => {
                 observer.unobserve(loaderRef.current);
             }
         };
-    }, [setSize, isReachingEnd, isLoading]);
+    }, [setSize, isReachingEnd, isLoadingMore]);
+
+    const handleFilter = (start, end) => {
+        setStartDate(start);
+        setEndDate(end);
+    };
+
+    const handleSortChange = (field) => {
+        setSort((prevSort) => {
+            if (prevSort.field === field) {
+                return {
+                    field,
+                    direction: prevSort.direction === 'asc' ? 'desc' : 'asc',
+                };
+            }
+            return { field, direction: 'asc' };
+        });
+    };
+
+    const renderSortIndicator = (field) => {
+        if (sort.field !== field) return null;
+        if (sort.direction === 'asc') {
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6">
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18"
+                    />
+                </svg>
+            );
+        } else {
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6">
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 17.25 12 21m0 0-3.75-3.75M12 21V3"
+                    />
+                </svg>
+            );
+        }
+    };
 
     if (error)
         return (
             <div className="text-red-500">Failed to load phone numbers.</div>
         );
-    if (!calls && calls.length != 0) return <div>Loading...</div>;
-    if (calls.length == 0)
+    if (calls.length == 0 && !isLoadingMore)
         return <div className="text-red-500">No call history available.</div>;
 
     const columns = [
         {
-            key: 'date',
+            key: 'created_at',
             title: 'Date',
             className: 'px-3 py-3.5 uppercase text-xs font-semibold',
         },
         {
-            key: 'to',
+            key: 'counterparty',
             title: 'To',
             className: 'px-3 py-3.5 uppercase text-xs font-semibold',
         },
         {
-            key: 'type',
+            key: 'call_type',
             title: 'Type',
             className: 'px-3 py-3.5 text-xs font-semibold',
         },
@@ -131,20 +196,20 @@ const CallsList = ({ phone_number }) => {
                             </div>
                         </div>
                         <div className="mt-8 flow-root">
+                            <DateFilterBar onFilter={handleFilter} />
                             <Table
                                 columns={columns}
                                 data={calls}
                                 renderRow={renderRow}
-                                keyExtractor={(item) =>
-                                    `${item.created_at}-${item.counterparty}`
-                                }
+                                onSortChange={handleSortChange}
+                                sortIndicator={renderSortIndicator}
                             />
                             <div ref={loaderRef} className="text-center">
-                                {isLoading ? (
-                                    <p>Loading more...</p>
-                                ) : isReachingEnd ? (
-                                    <p>No more data.</p>
-                                ) : null}
+                                {isLoadingMore && !isReachingEnd ? (
+                                    <p>Loading...</p>
+                                ) : (
+                                    ''
+                                )}
                             </div>
                         </div>
                     </div>
