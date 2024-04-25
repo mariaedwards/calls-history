@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-const Table = ({ columns, data, renderRow }) => {
+const Table = ({ columns, data, renderRow, onSortChange, sortIndicator }) => {
     return (
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -13,9 +13,17 @@ const Table = ({ columns, data, renderRow }) => {
                                     scope="col"
                                     className={classNames(
                                         'sticky px-3 py-3.5 text-left uppercase text-xs font-semibold text-white',
-                                        column.className
-                                    )}>
-                                    {column.title}
+                                        column.className,
+                                        { 'cursor-pointer': !!onSortChange }
+                                    )}
+                                    onClick={() =>
+                                        onSortChange && onSortChange(column.key)
+                                    }>
+                                    <p className='flex items-center'>
+                                        {column.title}
+                                        {sortIndicator &&
+                                            sortIndicator(column.key)}
+                                    </p>
                                 </th>
                             ))}
                         </tr>

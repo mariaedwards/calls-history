@@ -3,13 +3,14 @@ import axios from 'axios';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export const usePaginatedFetch = (url, startDate = null, endDate = null) => {
+export const usePaginatedFetch = (url, startDate = null, endDate = null, sort = null) => {
     const getKey = (pageIndex, previousPageData) => {
         if (previousPageData && !previousPageData.next) return null;
 
         let query = `${url}?page=${pageIndex + 1}`;
         if (startDate) query += `&start_date=${startDate}`;
         if (endDate) query += `&end_date=${endDate}`;
+        if (sort) query += `&ordering=${sort}`;
 
         return query;
     };
