@@ -39,8 +39,7 @@ const PhonesList = () => {
         return (
             <div className="text-red-500">Failed to load phone numbers.</div>
         );
-    if (!phones && phones.length != 0) return <div>Loading...</div>;
-    if (phones.length == 0)
+    if (phones.length == 0 && !isLoadingMore)
         return <div className="text-red-500">No phones available.</div>;
 
     const columns = [
@@ -148,8 +147,8 @@ const PhonesList = () => {
                             renderRow={renderRow}
                             keyExtractor={(item) => item.number}
                         />
-                        <div ref={loaderRef}>
-                            {isLoadingMore ? <p>Loading more...</p> : ''}
+                        <div ref={loaderRef} className="text-center">
+                            {isLoadingMore && !isReachingEnd ? <p>Loading...</p> : ''}
                         </div>
                     </div>
                 </div>

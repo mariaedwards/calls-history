@@ -11,7 +11,7 @@ const CallsList = ({ phone_number }) => {
         error,
         setSize,
         isReachingEnd,
-        isLoading,
+        isLoadingMore,
     } = usePaginatedFetch(
         `http://localhost:8000/api/calls/${encodeURIComponent(phone_number)}`
     );
@@ -20,7 +20,7 @@ const CallsList = ({ phone_number }) => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting && !isReachingEnd && !isLoading) {
+                if (entries[0].isIntersecting && !isReachingEnd && !isLoadingMore) {
                     setSize((size) => size + 1);
                 }
             },
@@ -34,14 +34,13 @@ const CallsList = ({ phone_number }) => {
                 observer.unobserve(loaderRef.current);
             }
         };
-    }, [setSize, isReachingEnd, isLoading]);
+    }, [setSize, isReachingEnd, isLoadingMore]);
 
     if (error)
         return (
             <div className="text-red-500">Failed to load phone numbers.</div>
         );
-    if (!calls && calls.length != 0) return <div>Loading...</div>;
-    if (calls.length == 0)
+    if (calls.length == 0 && !isLoadingMore)
         return <div className="text-red-500">No call history available.</div>;
 
     const columns = [
@@ -140,11 +139,7 @@ const CallsList = ({ phone_number }) => {
                                 }
                             />
                             <div ref={loaderRef} className="text-center">
-                                {isLoading ? (
-                                    <p>Loading more...</p>
-                                ) : isReachingEnd ? (
-                                    <p>No more data.</p>
-                                ) : null}
+                                {isLoadingMore && !isReachingEnd ? <p>Loading...</p> : ''}
                             </div>
                         </div>
                     </div>
