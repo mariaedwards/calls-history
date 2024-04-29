@@ -1,6 +1,6 @@
 # Calls History
 
-Community phone take home exercise submission
+Community phone take-home exercise submission.
 
 ## Task
 
@@ -8,13 +8,13 @@ Community phone take home exercise submission
 
 - Part 1: Develop a RESTful API using Python (and preferably Django) that returns
 dummy call history data for a given phone number.
-- Part 2: Create a Next.js application that fetches call history data using the swr library
+- Part 2: Create a Next.js application that fetches call history data using the SWR library
 and displays it on a page.
 
 **Part 1**
 The API should expose the call history for a given phone number using dummy data.
 Each record should include the time of the call, counterparty phone number, call status
-('Completed Inbound', 'Missed Inbound', 'Completed Outbound', 'Missed Outbound'),
+('Completed Inbound,' 'Missed Inbound,' 'Completed Outbound,' 'Missed Outbound'),
 and duration in seconds (for completed calls).
 
 You have the flexibility to design the API according to your preferences. Below is an
@@ -55,7 +55,7 @@ As a side note, I am not familiar with the details of the Django ecosystem and h
 
 1. Set up project structure and install Django and Django REST framework.
 
-Django is a requirement for this project. I chose to integrate the Django REST framework due to its robustness and flexibility as a toolkit for building Web APIs. It enhances Django's capabilities, facilitating the creation of APIs that can interact with other services or serve as the backend for front-end applications, especially in Single Page Application (SPA) architectures that use frameworks like React or Angular.
+Django is a requirement for this project. I chose to integrate the Django REST framework due to its robustness and flexibility as a toolkit for building Web APIs. It enhances Django's capabilities, facilitating the creation of APIs that can interact with other services or serve as the backend for front-end applications, especially in single-page application (SPA) architectures that use frameworks like React or Angular.
 
 2. Add Docker and PostgreSQL
 
@@ -78,8 +78,8 @@ The dummy data required for initial testing and simulation purposes is generated
 
 ### Client
 
-Per requirement, I am going to use Next.js and the swr library. For saving time in developing custom components, I chose to use TailwindCSS.
-I decided to utilize infinite scrolling even though for a data-driven application it is not ideal (in oppose to table with pages)
+Per requirement, I am going to use Next.js and the SWR library. To save time in developing custom components, I chose to use TailwindCSS.
+I decided to utilize infinite scrolling even though, for a data-driven application, it is not ideal (in opposition to table with pages)
 
 ### Running the application
 
@@ -118,13 +118,13 @@ See screenshots in /assets folder
 
 ### Known Issues
 
-- Filtering dates has some discrepancy - it includes previous date
+- Filtering dates has some discrepancies - it includes the previous date
 
 ### Next steps
 
 1. Client tests
-2. Sorting and filtering functionality on client
-2. Implementing nice loading state
+2. Sorting and filtering functionality on the client
+2. Implementing a nice loading state
 3. Breaking lists into smaller components
 4. Utilizing env variables and production-ready libraries for deployment
 5. Improvements
